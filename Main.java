@@ -47,6 +47,10 @@ public class Main extends Application{
 			worldStage.show();
 		}
 	}
+	
+	public static World getWorld() {
+		return world;
+	}
 
 	@Override
 	public void start(Stage primaryStage) {

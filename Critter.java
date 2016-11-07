@@ -15,6 +15,12 @@ package assignment5;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
  * no new public, protected or default-package code or data can be added to Critter
@@ -556,34 +562,30 @@ public abstract class Critter {
 		
 		populateWorld();
 		
-		System.out.print("+");
-		for (int i = 0; i < Params.world_width; i++) {
-			System.out.print("-");
+		Group root = new Group();				
+		Canvas worldCanvas = new Canvas(600, 400);
+		GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+		
+		gc.setStroke(Color.BLACK);
+		gc.setFill(Color.BLACK);
+		
+		int x_coord = 0;
+		int y_coord = 0;
+		
+		System.out.println(CritterWorld.getPopulation());
+		
+		for (Critter c : CritterWorld.getLivingCritters()) {
+			// gc.fillOval(c.x_coord, c.y_coord, 10.0, 10.0);
+			gc.fillOval(x_coord, y_coord, 10.0, 10.0);
+			x_coord += 20;
+			y_coord += 20;
 		}
-		System.out.println("+");
 		
-		for (int i = 0; i < Params.world_height; i++) {
-			System.out.print("|");
-			
-			for (int j = 0; j < Params.world_width; j++) {
-				if (CritterWorld.getWorld()[i][j] != null) {
-					System.out.print(CritterWorld.getWorld()[i][j].toString());
-				}
-				else {
-					System.out.print(" ");
-				}
-			}
-			System.out.println("|");
-		}
+		gc.fillOval(0, 0, 10.0, 10.0);
 		
-		System.out.print("+");
-		
-		for (int i = 0; i < Params.world_width; i++) {
-			System.out.print("-");
-		} 
-		
-		System.out.println("+");
-		
+		root.getChildren().add(worldCanvas);
+		Main.getWorld().worldStage.setScene(new Scene(root));
+		Main.getWorld().worldStage.show();
 	}
 }
 
