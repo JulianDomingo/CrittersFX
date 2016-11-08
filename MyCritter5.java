@@ -1,5 +1,7 @@
 package assignment5;
 
+import assignment5.Critter.CritterShape;
+
 /* CRITTERS <MyCritter5.java>
  * EE422C Project 4 submission by
  * 
@@ -93,7 +95,16 @@ public class MyCritter5 extends Critter{
 
 	@Override
 	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.STAR;
+	} 
+	
+	@Override
+	public javafx.scene.paint.Color viewFillColor() {
+		return javafx.scene.paint.Color.GREY;
+	}
+	
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() {
+		return javafx.scene.paint.Color.BLACK;
 	}
 }

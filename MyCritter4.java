@@ -18,6 +18,8 @@
  */
 package assignment5;
 
+import assignment5.Critter.CritterShape;
+
 public class MyCritter4 extends Critter{
 	private int dir;
 	private int spam;
@@ -74,7 +76,16 @@ public class MyCritter4 extends Critter{
 
 	@Override
 	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.SQUARE;
+	} 
+	
+	@Override
+	public javafx.scene.paint.Color viewFillColor() {
+		return javafx.scene.paint.Color.DARKORANGE;
+	}
+	
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() {
+		return javafx.scene.paint.Color.BLACK;
 	}
 }

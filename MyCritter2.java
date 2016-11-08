@@ -19,6 +19,8 @@ package assignment5;
 
 import java.util.ArrayList;
 
+import assignment5.Critter.CritterShape;
+
 public class MyCritter2 extends Critter {
 	
 	// MyCritter2 fields
@@ -114,7 +116,16 @@ public class MyCritter2 extends Critter {
 
 	@Override
 	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.TRIANGLE;
+	} 
+	
+	@Override
+	public javafx.scene.paint.Color viewFillColor() {
+		return javafx.scene.paint.Color.TOMATO;
+	}
+	
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() {
+		return javafx.scene.paint.Color.BLACK;
 	}
 }

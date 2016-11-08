@@ -572,11 +572,8 @@ public abstract class Critter {
 		Main.gridPane = new GridPane();
 			
 		for (Critter living : CritterWorld.getLivingCritters()) {
-			// TODO: Make unique shape / color for each critter.
 			Main.gridPane.add(getCritterShape(living), living.x_coord, living.y_coord);
-			// Main.gridPane.add(new Circle(10.0), living.x_coord, living.y_coord);
-		}
-		
+		}		
 		
 		// Refresh world scene holding the critter world.
 		Main.worldScene = new Scene(Main.gridPane, 600, 400);

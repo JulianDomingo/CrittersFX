@@ -23,14 +23,19 @@ public class MyCritter1 extends Critter.TestCritter {
 	public void test (List<Critter> l) {
 		
 	}
-
+	
 	@Override
 	public CritterShape viewShape() {
-		return CritterShape.DIAMOND;
-	}
+		return CritterShape.STAR;
+	} 
 	
 	@Override
 	public javafx.scene.paint.Color viewFillColor() {
 		return javafx.scene.paint.Color.CORAL;
+	}
+	
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() {
+		return javafx.scene.paint.Color.BLACK;
 	}
 }
