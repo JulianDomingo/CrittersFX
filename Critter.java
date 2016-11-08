@@ -19,7 +19,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 /* see the PDF for descriptions of the methods and fields in this class
  * you may add fields, methods or inner classes to Critter ONLY if you make your additions private
@@ -277,7 +282,7 @@ public abstract class Critter {
 		Object instanceOfMyCritter = null;
 
 	    try {
-			myCritter = Class.forName("assignment4." + critter_class_name);
+			myCritter = Class.forName("assignment5." + critter_class_name);
 		    constructor = myCritter.getConstructor(); // get null parameter constructor
 		    instanceOfMyCritter = constructor.newInstance(); // create instance
 		    Critter me = (Critter) instanceOfMyCritter; // cast to Critter
@@ -558,34 +563,52 @@ public abstract class Critter {
 	/**
 	 * Displays the Current state of the World
 	 */
+	static double size = 10.0;
 	public static void displayWorld() {
 		
 		populateWorld();
 		
-		Group root = new Group();				
-		Canvas worldCanvas = new Canvas(600, 400);
-		GraphicsContext gc = worldCanvas.getGraphicsContext2D();
-		
-		gc.setStroke(Color.BLACK);
-		gc.setFill(Color.BLACK);
-		
-		int x_coord = 0;
-		int y_coord = 0;
-		
-		System.out.println(CritterWorld.getPopulation());
-		
-		for (Critter c : CritterWorld.getLivingCritters()) {
-			// gc.fillOval(c.x_coord, c.y_coord, 10.0, 10.0);
-			gc.fillOval(x_coord, y_coord, 10.0, 10.0);
-			x_coord += 20;
-			y_coord += 20;
+		Main.gridPane = new GridPane();
+			
+		for (Critter living : CritterWorld.getLivingCritters()) {
+			// TODO: Make unique shape / color for each critter.
+			// Main.grid.add(getCritterShape(living), living.x_coord, living.y_coord);
+			Main.gridPane.add(new Circle(10.0), living.x_coord, living.y_coord);
 		}
 		
-		gc.fillOval(0, 0, 10.0, 10.0);
-		
-		root.getChildren().add(worldCanvas);
-		Main.getWorld().worldStage.setScene(new Scene(root));
-		Main.getWorld().worldStage.show();
+		Main.worldScene = new Scene(Main.gridPane, 600, 400);
+		Main.worldStage.setScene(Main.worldScene);
+		Main.worldStage.show();
+	} 
+	
+//	static Shape getCritterShape(Critter c) {
+//		Shape s = null;
+//		
+//		switch (c.viewShape()) {
+//			case CIRCLE: s = new Circle(10.0);
+//						 break;
+//			case SQUARE: s = new Rectangle(10.0, 10.0);
+//						 break;
+//			// case TRIANGLE: s = new Triangle(10.0, 10.0);
+//			case TRIANGLE: s = (Polygon) new Polygon();	
+//						   
+//		}
+//		s.setFill(c.viewColor());
+//		s.setStroke(c.viewOutlineColor());
+//		return s;	
+//	}
+	
+	
+	/**
+	 * 	public enum CritterShape {
+		CIRCLE,
+		SQUARE,
+		TRIANGLE,
+		DIAMOND,
+		STAR
 	}
+	 */
+	
+	
 }
 

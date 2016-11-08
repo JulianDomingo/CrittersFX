@@ -25,32 +25,30 @@ import javafx.collections.ObservableList;
 
 
 public class Main extends Application{
-	private static World world;
+	static GridPane gridPane = new GridPane();
+	static Stage worldStage;
+	static Scene worldScene;
+//	class World {
+//		Stage worldStage;
+//		World() {
+//			worldStage = new Stage();
+//			worldStage.setTitle("Critters World");
+//	
+//			GridPane root = new GridPane();
+//			root.setAlignment(Pos.CENTER);
+//			
+//			Scene worldScene = new Scene(root, 600, 400);		
+//						
+//			worldStage.setScene(worldScene);
+//			worldStage.setX(670);
+//			worldStage.setY(150);
+//			worldStage.show();
+//		}
+//	}
 	
-	class World {
-		Stage worldStage;
-		World() {
-			worldStage = new Stage();
-			worldStage.setTitle("Critters World");
-	
-			GridPane root = new GridPane();
-			Canvas worldCanvas = new Canvas(550, 550);
-			root.setAlignment(Pos.CENTER);
-			
-			root.getChildren().add(worldCanvas);
-			
-			Scene worldScene = new Scene(root, 600, 400);		
-						
-			worldStage.setScene(worldScene);
-			worldStage.setX(670);
-			worldStage.setY(150);
-			worldStage.show();
-		}
-	}
-	
-	public static World getWorld() {
-		return world;
-	}
+//	public static World getWorld() {
+//		return world;
+//	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -168,7 +166,17 @@ public class Main extends Application{
         primaryStage.setX(170);
         primaryStage.setY(150);
         primaryStage.show();
-        world = new World();
+        
+        gridPane = new GridPane();
+        worldStage = new Stage();
+        worldStage.setTitle("Critter World");
+  
+        worldScene = new Scene(gridPane, 600, 400);
+        worldStage.setScene(worldScene); 
+		worldStage.setX(670);
+		worldStage.setY(150);
+        worldStage.show();
+        
         
 	}
 }
