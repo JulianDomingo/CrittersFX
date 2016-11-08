@@ -1,5 +1,7 @@
 package assignment5;
 
+import assignment5.Critter.CritterShape;
+
 public class Craig extends Critter {
 	
 	@Override
@@ -71,7 +73,9 @@ public class Craig extends Critter {
 		System.out.println();
 	}
 	
-	@Override public CritterShape viewShape() { return CritterShape.SQUARE; }
+	@Override public CritterShape viewShape() { 
+		return CritterShape.SQUARE;
+	}
 	
 	@Override public javafx.scene.paint.Color viewOutlineColor() { 
 		return javafx.scene.paint.Color.BLUE; 

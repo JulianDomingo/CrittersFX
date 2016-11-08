@@ -1,6 +1,8 @@
 package assignment5;
 import java.util.*;
 
+import javafx.scene.paint.Color;
+
 public class MyCritter1 extends Critter.TestCritter {
 
 	@Override
@@ -13,7 +15,7 @@ public class MyCritter1 extends Critter.TestCritter {
 		if (getEnergy() > 10) return true;
 		return false;
 	}
-	
+	 
 	public String toString() {
 		return "1";
 	}
@@ -24,7 +26,11 @@ public class MyCritter1 extends Critter.TestCritter {
 
 	@Override
 	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.DIAMOND;
+	}
+	
+	@Override
+	public javafx.scene.paint.Color viewFillColor() {
+		return javafx.scene.paint.Color.CORAL;
 	}
 }

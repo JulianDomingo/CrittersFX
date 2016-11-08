@@ -568,47 +568,68 @@ public abstract class Critter {
 		
 		populateWorld();
 		
+		// Refresh world stage. 
 		Main.gridPane = new GridPane();
 			
 		for (Critter living : CritterWorld.getLivingCritters()) {
 			// TODO: Make unique shape / color for each critter.
-			// Main.grid.add(getCritterShape(living), living.x_coord, living.y_coord);
-			Main.gridPane.add(new Circle(10.0), living.x_coord, living.y_coord);
+			Main.gridPane.add(getCritterShape(living), living.x_coord, living.y_coord);
+			// Main.gridPane.add(new Circle(10.0), living.x_coord, living.y_coord);
 		}
 		
+		
+		// Refresh world scene holding the critter world.
 		Main.worldScene = new Scene(Main.gridPane, 600, 400);
 		Main.worldStage.setScene(Main.worldScene);
+		
+		// Display the updated critter world.
 		Main.worldStage.show();
 	} 
 	
-//	static Shape getCritterShape(Critter c) {
-//		Shape s = null;
-//		
-//		switch (c.viewShape()) {
-//			case CIRCLE: s = new Circle(10.0);
-//						 break;
-//			case SQUARE: s = new Rectangle(10.0, 10.0);
-//						 break;
-//			// case TRIANGLE: s = new Triangle(10.0, 10.0);
-//			case TRIANGLE: s = (Polygon) new Polygon();	
-//						   
-//		}
-//		s.setFill(c.viewColor());
-//		s.setStroke(c.viewOutlineColor());
-//		return s;	
-//	}
-	
-	
 	/**
-	 * 	public enum CritterShape {
-		CIRCLE,
-		SQUARE,
-		TRIANGLE,
-		DIAMOND,
-		STAR
+	 * Retrieves unique critter shape and color values.
+	 * @param c
+	 * @return
+	 */ 
+	static Shape getCritterShape(Critter c) {
+		Shape s = null;
+		
+		switch (c.viewShape()) {
+			case CIRCLE: s = new Circle(10.0);
+						 break;
+			case SQUARE: s = new Rectangle(10.0, 10.0);
+						 break; 
+			case TRIANGLE: s = (Polygon) new Polygon();
+						   ((Polygon) s).getPoints().addAll(new Double[] {
+								   17.5, 0.0,
+								   25.0, 10.0,
+								   10.0, 10.0
+						   });
+						   break;
+			case DIAMOND: s = (Polygon) new Polygon();
+						  ((Polygon) s).getPoints().addAll(new Double[] {
+								   17.5, 0.0,
+								   25.0, 10.0,
+								   17.5, 20.0,
+								   10.0, 10.0
+						  });
+						  break; 
+			case STAR: s = (Polygon) new Polygon();
+					   ((Polygon) s).getPoints().addAll(new Double[] {							   	   							   	   							   	 							   	   												   	  
+							   	10.0, 17.5,
+							   	25.0, 20.0,							  
+							   	10.0, 2.5,
+							    17.5, 20.0,
+							    25.0, 2.5							   								   							   	  					   	   
+					   });
+					   break;
+			default: s = new Circle(10.0);
+					 break;
+		}
+		
+		s.setFill(c.viewColor());
+		s.setStroke(c.viewOutlineColor());
+		return s;	
 	}
-	 */
-	
-	
 }
 

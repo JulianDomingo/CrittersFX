@@ -1,6 +1,7 @@
 package assignment5;
 
 import javafx.event.ActionEvent;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -61,9 +62,9 @@ public class Main extends Application{
 		titleCritter.setText("Critters");
 		titleCritter.setAlignment(Pos.CENTER);
 		titleCritter.setMaxWidth(Double.MAX_VALUE);
-		titleCritter.setTextFill(Color.rgb(50, 205, 50));
+		titleCritter.setTextFill(Color.rgb(50, 205, 50));		
 		
-        ObservableList<String> options = 
+		ObservableList<String> options = 
         	    FXCollections.observableArrayList(
         	        "Algae",
         	        "Craig",
