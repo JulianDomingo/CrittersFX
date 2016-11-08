@@ -1,5 +1,6 @@
 package assignment5;
 
+import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +27,8 @@ import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import assignment5.Critter.CritterShape;
 import javafx.application.Application;
@@ -35,6 +39,8 @@ import javafx.collections.ObservableList;
 public class Main extends Application{
 	private static World world;
 	private static ArrayList<String> critterNames = new ArrayList<String>();
+	private static Boolean animationFlag = false;
+	private static Timer timer = new Timer();
 	
 	
 	public static void main(String[] args) {
@@ -67,6 +73,10 @@ public class Main extends Application{
 		}
 	
 		launch(args);
+	}
+	
+	public static Boolean getFlag() {
+		return animationFlag;
 	}
 	
 	class World {
@@ -108,6 +118,7 @@ public class Main extends Application{
 		tf.setPrefWidth(50);
 		
 		Label animationText = new Label();
+		animationText.setFont(Font.font ("Verdana", 15));
 		animationText.setText("Animation Speed");
 		animationText.setAlignment(Pos.CENTER);
 		animationText.setMaxWidth(Double.MAX_VALUE);
@@ -116,12 +127,14 @@ public class Main extends Application{
 		ScrollBar scrollBar = new ScrollBar();
 		scrollBar.setMin(0);
 		scrollBar.setMax(500);
-		scrollBar.setValue(250);
+		scrollBar.setValue(1);
 		
 		
 		TextArea textArea = new TextArea();
 		textArea.setWrapText(true);
 		textArea.setEditable(false);
+		textArea.setText("runStats will appear here : D");
+		
 		
 		Button makeButton = new Button();
 		makeButton.setOnAction((ActionEvent event)-> {
@@ -141,10 +154,6 @@ public class Main extends Application{
 				}
 			}
 		});
-		
-		Button startAnimationButton = new Button();
-		Button stopAnimationButton = new Button();
-		
 		
 		Button runStatsButton = new Button();
 		runStatsButton.setOnAction((ActionEvent event)-> {
@@ -189,11 +198,46 @@ public class Main extends Application{
         	}
 		});
         
+        
         Button displayButton = new Button();
         displayButton.setOnAction((ActionEvent event)-> Critter.displayWorld());
         
         Button quitButton = new Button();
         quitButton.setOnAction((ActionEvent event)-> System.exit(0));
+        
+        Button startAnimationButton = new Button();
+        Button stopAnimationButton = new Button();
+		
+		startAnimationButton.setOnAction((ActionEvent event)-> {
+			makeButton.setDisable(true);
+			runStatsButton.setDisable(true);
+			displayButton.setDisable(true);
+			stepButton.setDisable(true);
+			comboBox.setDisable(true);
+			tf.setDisable(true);
+			Double frameSpeed = scrollBar.getValue();
+			
+			//System.out.println(frameSpeed);
+			animationFlag = true;
+			
+			
+			TimerTask tasknew = new CritterAnimation(frameSpeed);
+			timer = new Timer();
+			timer.schedule(tasknew, 0, 2000);
+		});
+		
+		stopAnimationButton.setOnAction((ActionEvent event)->{
+			makeButton.setDisable(false);
+			runStatsButton.setDisable(false);
+			displayButton.setDisable(false);
+			stepButton.setDisable(false);
+			comboBox.setDisable(false);
+			tf.setDisable(false);
+			animationFlag = false;
+			timer.cancel();
+		});
+		
+		
         
         makeButton.setText("Make");
         runStatsButton.setText("runStats");
