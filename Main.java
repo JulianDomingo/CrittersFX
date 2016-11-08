@@ -37,10 +37,13 @@ import javafx.collections.ObservableList;
 
 
 public class Main extends Application{
-	private static World world;
 	private static ArrayList<String> critterNames = new ArrayList<String>();
 	private static Boolean animationFlag = false;
 	private static Timer timer = new Timer();
+	
+	static GridPane gridPane;
+	static Canvas worldCanvas;
+	static Stage worldStage;
 	
 	
 	public static void main(String[] args) {
@@ -77,27 +80,6 @@ public class Main extends Application{
 	
 	public static Boolean getFlag() {
 		return animationFlag;
-	}
-	
-	class World {
-		Stage worldStage;
-		World() {
-			worldStage = new Stage();
-			worldStage.setTitle("Critters World");
-	
-			GridPane root = new GridPane();
-			Canvas worldCanvas = new Canvas(550, 550);
-			root.setAlignment(Pos.CENTER);
-			
-			root.getChildren().add(worldCanvas);
-			
-			Scene worldScene = new Scene(root, 550, 400);		
-						
-			worldStage.setScene(worldScene);
-			worldStage.setX(670);
-			worldStage.setY(150);
-			worldStage.show();
-		}
 	}
 
 	@Override
@@ -222,7 +204,7 @@ public class Main extends Application{
 			
 			
 			TimerTask tasknew = new CritterAnimation(frameSpeed);
-			timer = new Timer();
+			timer = new Timer(); 
 			timer.schedule(tasknew, 0, 2000);
 		});
 		
@@ -282,6 +264,17 @@ public class Main extends Application{
         primaryStage.setX(170);
         primaryStage.setY(150);
         primaryStage.show();
-        world = new World();
+        
+        gridPane = new GridPane();
+        worldStage = new Stage();
+        worldStage.setTitle("Critter World");
+  
+        Scene worldScene = new Scene(gridPane, 600, 400);
+        worldStage.setScene(worldScene); 
+		worldStage.setX(670);
+		worldStage.setY(150);
+        worldStage.show();
+        
+        
 	}
 }

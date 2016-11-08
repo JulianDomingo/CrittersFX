@@ -562,9 +562,8 @@ public abstract class Critter {
 	}
 	
 	/**
-	 * Displays the Current state of the World
+	 * Displays the current state of the critter world.
 	 */
-	static double size = 10.0;
 	public static void displayWorld() {
 		
 		populateWorld();
@@ -573,16 +572,13 @@ public abstract class Critter {
 		Main.gridPane.setVgap(1);
 		Main.gridPane.setHgap(1); 
 		Main.gridPane.getChildren().clear();
-		gc.clearRect(0, 0, 600, 400);
+		gc.clearRect(0, 0, Params.world_width, Params.world_height);
 		  
 		for (Critter living : CritterWorld.getLivingCritters()) {
-			// gc.fillOval(living.x_coord * 10, living.y_coord * 10, 10.0, 10.0);
-			drawCritterShape(living, gc);
-			// Main.gridPane.getChildren().add(getCritterShape(living));	
+			drawCritterShape(living, gc);			
 		}	
 			 
-		Main.gridPane.getChildren().add(Main.worldCanvas);
-		
+		Main.gridPane.getChildren().add(Main.worldCanvas);		
 		Main.worldStage.show();
 	} 
 	
@@ -593,66 +589,63 @@ public abstract class Critter {
 		gc.setFill(c.viewColor());
 		gc.setStroke(c.viewOutlineColor());
 		
-		switch(c.viewShape()) {
-			case CIRCLE: gc.fillOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0); 
-						 gc.strokeOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0);
-						 break;
-			case SQUARE: gc.fillRect(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0);
-						 gc.strokeRect(c.x_coord* 10, c.y_coord * 10, 10.0, 10.0);
-						 break; 
-			default: gc.fillOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0); 
-					 gc.strokeOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0);
-					 break;
-			
-		}					
+//		double x = Params.world_width / c.x_coord;
+//		double y = Params.world_height / c.y_coord;
+		double x = c.x_coord;
+		double y = c.y_coord;
 		
+		double size = Math.sqrt((Double) (Params.world_height / 10.0));
 		
-	}
-	
-	/**
-	 * Retrieves unique critter shape and color values.
-	 * @param c
-	 * @return
-	 */ 
-	static Shape getCritterShape(Critter c) {
-		Shape s = null;
+//		double x = 0.0, y = 0.0;
+//		boolean settingX = false;
+//		
+//		try {
+//			settingX = true;
+//			x = (Params.world_width / c.x_coord) * 10.0;
+//			settingX = false;
+//			y = (Params.world_height / c.y_coord) * 10.0;
+//		}
+//		catch (ArithmeticException e1) {
+//			if (settingX) { x = 5.0; }
+//			else { y = 5.0; }		
+//		}
 		
 		switch (c.viewShape()) {
-			case CIRCLE: s = new Circle(25.0);
+			case CIRCLE: gc.fillOval(x, y, size, size); 
+						 gc.strokeOval(x, y, size, size);
 						 break;
-			case SQUARE: s = new Rectangle(25.0, 25.0);
+			case SQUARE: gc.fillRect(x, y, size, size);
+						 gc.strokeRect(x, y, size, size);
 						 break; 
-			case TRIANGLE: s = (Polygon) new Polygon();
-						   ((Polygon) s).getPoints().addAll(new Double[] {
-								   17.5, 0.0,
-								   25.0, 10.0,
-								   10.0, 10.0
-						   });
+			case TRIANGLE: gc.fillPolygon(new double[]{
+						   		x, x + 5.0, x + 10.0
+						   }, new double[] {
+								y, y - 10.0, y
+						   }, 3);
+						   gc.strokePolygon(new double[]{
+						   		x, x + 5.0, x + 10.0
+						   }, new double[] {
+								y, y - 10.0, y 
+						   }, 3); 
 						   break;
-			case DIAMOND: s = (Polygon) new Polygon();
-						  ((Polygon) s).getPoints().addAll(new Double[] {
-								   17.5, 0.0,
-								   25.0, 10.0,
-								   17.5, 20.0,
-								   10.0, 10.0
-						  });
-						  break; 
-			case STAR: s = (Polygon) new Polygon();
-					   ((Polygon) s).getPoints().addAll(new Double[] {							   	   							   	   							   	 							   	   												   	  
-							   	10.0, 17.5,
-							   	25.0, 20.0,							  
-							   	10.0, 2.5,
-							    17.5, 20.0,
-							    25.0, 2.5							   								   							   	  					   	   
-					   });
-					   break;
-			default: s = new Circle(25.0);
-					 break;
-		}
-		
-		s.setFill(c.viewColor());
-		s.setStroke(c.viewOutlineColor());
-		return s;	
+			case DIAMOND: gc.fillPolygon(new double[]{
+								x + 5, x, x - 5, x
+						   }, new double[]{
+								y, y + 5, y, y - 5
+						   }, 4); 
+						   gc.strokePolygon(new double[]{
+								x + 5, x, x - 5, x
+						   }, new double[]{
+								y, y + 5, y, y - 5
+						   }, 4);
+						   break;
+			case STAR: double xPoints[] = {x - 10, x - 2.5, x, x + 2.5, x + 10, x + 5, x + 6, x, x - 6, x- 5};
+					   double yPoints[] = {y + 7.5, y + 6.5, y, y + 6.5, y + 7.5, y + 11.5, y + 18, y + 14, y + 18, y + 11.5};
+					   gc.fillPolygon(xPoints, yPoints, 10);
+					   gc.strokePolygon(xPoints, yPoints, 10); 
+					   break; 
+			default: throw new IllegalStateException("Shape not specified for " + c.getClass().getName());
+		}	 
 	}
 }
 
