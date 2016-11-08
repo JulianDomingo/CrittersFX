@@ -41,13 +41,17 @@ public class Main extends Application{
 	private static ArrayList<String> critterNames = new ArrayList<String>();
 	private static ArrayList<String> runStatsArr = new ArrayList<String>();
 	private static Timer timer = new Timer();
-
 	
+    static GridPane gridPane;
+    static Canvas worldCanvas;
+    static Stage worldStage;
+
 	public static void main(String[] args) {
 		
 		List<String> results = new ArrayList<String>();
 		
-		String filePath = "/Users/KaTaiHo/Documents/workspace/Critters_2/src/assignment5";
+		// String filePath = "/Users/KaTaiHo/Documents/workspace/Critters_2/src/assignment5";
+		String filePath = "/Users/User/422C/assignment5/src/assignment5";
 		File[] files = new File(filePath).listFiles();
 		
 		for (File file : files) {
@@ -73,10 +77,6 @@ public class Main extends Application{
 		}
 	
 		launch(args);
-	}
-	
-	public static Boolean getFlag() {
-		return animationFlag;
 	}
 	
 	class World {
@@ -229,7 +229,7 @@ public class Main extends Application{
 				
 			TimerTask tasknew = new CritterAnimation(frameSpeed, runStatsArr, textArea);
 			timer = new Timer();
-			timer.schedule(tasknew, 0, 2000);
+			timer.schedule(tasknew, 2000, 2000);
 		});
 		
 		stopAnimationButton.setOnAction((ActionEvent event)->{
@@ -293,6 +293,16 @@ public class Main extends Application{
         primaryStage.setX(170);
         primaryStage.setY(150);
         primaryStage.show();
-        world = new World();
+        
+        gridPane = new GridPane();
+        worldStage = new Stage();
+        worldStage.setTitle("Critter World");
+
+        worldCanvas = new Canvas(Params.world_width * 5.0, Params.world_height * 5.0);
+        gridPane.getChildren().add(worldCanvas);
+        worldStage.setScene(new Scene(gridPane, Params.world_width * 5.0, Params.world_height * 5.0));
+        worldStage.setX(670);
+        worldStage.setY(150);
+        worldStage.show();	
 	}
 }
