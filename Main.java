@@ -32,6 +32,7 @@ import java.util.TimerTask;
 
 import assignment5.Critter.CritterShape;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -229,7 +230,41 @@ public class Main extends Application{
 				
 			TimerTask tasknew = new CritterAnimation(frameSpeed, runStatsArr, textArea);
 			timer = new Timer();
-			timer.schedule(tasknew, 2000, 2000);
+			timer.schedule(new TimerTask() {
+				public void run() {
+					Platform.runLater(new Runnable() {
+						public void run() {
+							for (int i = 0; i < frameSpeed; i++) {
+								Critter.worldTimeStep();
+							}
+							String tempString = "";
+							
+							for (String s: runStatsArr) {
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
+							    PrintStream ps = new PrintStream(baos);
+							    // IMPORTANT: Save the old System.out!
+							    PrintStream old = System.out;
+							    // Tell Java to use your special stream
+							    System.setOut(ps);
+							    // Print some output: goes to your special stream	    
+								
+								try {
+									List<Critter> critters = Critter.getInstances(s);
+									Class<?> classes = Class.forName("assignment5." + s);
+									classes.getMethod("runStats", java.util.List.class).invoke(null, critters);
+								}
+								catch (Exception e) {
+									e.printStackTrace();
+								}
+								tempString += baos.toString();
+							}
+							textArea.setText(tempString);
+							
+							Critter.displayWorld();							
+						}
+					});
+				}		 
+			}, 100, 2000);
 		});
 		
 		stopAnimationButton.setOnAction((ActionEvent event)->{
