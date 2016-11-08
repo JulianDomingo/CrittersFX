@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -18,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +81,7 @@ public class Main extends Application{
 			
 			root.getChildren().add(worldCanvas);
 			
-			Scene worldScene = new Scene(root, 600, 400);		
+			Scene worldScene = new Scene(root, 550, 400);		
 						
 			worldStage.setScene(worldScene);
 			worldStage.setX(670);
@@ -94,12 +97,6 @@ public class Main extends Application{
 		Label runStatsOutput = new Label();
 		runStatsOutput.setTextFill(Color.WHITE);
 		
-		Label titleCritter = new Label();
-		titleCritter.setText("Critters");
-		titleCritter.setAlignment(Pos.CENTER);
-		titleCritter.setMaxWidth(Double.MAX_VALUE);
-		titleCritter.setTextFill(Color.rgb(50, 205, 50));
-        
 		ObservableList<String> options = FXCollections.observableArrayList();
 		for (String s: critterNames) {
 			options.add(s);
@@ -110,9 +107,9 @@ public class Main extends Application{
 		TextField tf = new TextField("#");
 		tf.setPrefWidth(50);
 		
-		Rectangle display = new Rectangle(800,900,410,100);
-		display.setStroke(Color.LIGHTGREY);
-		display.setFill(Color.BLACK);
+		TextArea textArea = new TextArea();
+		textArea.setWrapText(true);
+		textArea.setEditable(false);
 		
 		Button makeButton = new Button();
 		makeButton.setOnAction((ActionEvent event)-> {
@@ -134,12 +131,22 @@ public class Main extends Application{
 			}
 			System.out.println(CritterWorld.getPopulation());
 		});
+
 		
 		Button runStatsButton = new Button();
 		runStatsButton.setOnAction((ActionEvent event)-> {
 			String critterName = comboBox.getSelectionModel().getSelectedItem().toString();
 			
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		    // Create a stream to hold the output
+		    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		    PrintStream ps = new PrintStream(baos);
+		    // IMPORTANT: Save the old System.out!
+		    PrintStream old = System.out;
+		    // Tell Java to use your special stream
+		    System.setOut(ps);
+		    // Print some output: goes to your special stream
+		    
+			
 			try {
 				List<Critter> critters = Critter.getInstances(critterName);
 				Class<?> classes = Class.forName("assignment5." + critterName);
@@ -148,7 +155,7 @@ public class Main extends Application{
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			runStatsOutput.setText(baos.toString());
+			textArea.setText(baos.toString());
 		});
 
         Button stepButton = new Button();
@@ -196,16 +203,16 @@ public class Main extends Application{
 
         grid.setPadding(new Insets(25,25,25,25));
         
-        grid.add(display, 0, 0, 7, 1);
+        
         grid.add(runStatsOutput, 1, 0, 2, 1);
         grid.add(makeButton, 1, 2);
         grid.add(stepButton, 2, 2);
-        grid.add(runStatsButton, 3, 2);
-        grid.add(quitButton, 4, 2);
-        grid.add(tf, 5, 2);
-        grid.add(displayButton, 3, 4);
-        grid.add(comboBox, 3, 3, 1, 1);
-        grid.add(titleCritter, 3, 0);
+        grid.add(runStatsButton, 3, 2, 2, 1);
+        grid.add(quitButton, 5, 2);
+        grid.add(comboBox, 3, 3, 2, 1);
+        grid.add(displayButton, 3, 4, 2, 1);
+        grid.add(tf, 6, 2, 2, 1);
+        grid.add(textArea, 1, 0, 7, 1);
         
         grid.setStyle("-fx-background-color: black");
         Scene scene = new Scene(grid, 500, 400);
