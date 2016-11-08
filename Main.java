@@ -37,14 +37,11 @@ import javafx.collections.ObservableList;
 
 
 public class Main extends Application{
+	private static World world;
 	private static ArrayList<String> critterNames = new ArrayList<String>();
-	private static Boolean animationFlag = false;
+	private static ArrayList<String> runStatsArr = new ArrayList<String>();
 	private static Timer timer = new Timer();
-	
-	static GridPane gridPane;
-	static Canvas worldCanvas;
-	static Stage worldStage;
-	
+
 	
 	public static void main(String[] args) {
 		
@@ -80,6 +77,27 @@ public class Main extends Application{
 	
 	public static Boolean getFlag() {
 		return animationFlag;
+	}
+	
+	class World {
+		Stage worldStage;
+		World() {
+			worldStage = new Stage();
+			worldStage.setTitle("Critters World");
+	
+			GridPane root = new GridPane();
+			Canvas worldCanvas = new Canvas(550, 550);
+			root.setAlignment(Pos.CENTER);
+			
+			root.getChildren().add(worldCanvas);
+			
+			Scene worldScene = new Scene(root, 550, 400);		
+						
+			worldStage.setScene(worldScene);
+			worldStage.setX(670);
+			worldStage.setY(150);
+			worldStage.show();
+		}
 	}
 
 	@Override
@@ -187,6 +205,15 @@ public class Main extends Application{
         Button quitButton = new Button();
         quitButton.setOnAction((ActionEvent event)-> System.exit(0));
         
+        Button addButton = new Button();
+        addButton.setOnAction((ActionEvent event)->{
+        	if (!comboBox.getSelectionModel().isEmpty()) {
+        		runStatsArr.add(comboBox.getSelectionModel().getSelectedItem().toString());
+        	}	
+        	
+        	System.out.println(runStatsArr.toString());
+        });
+        
         Button startAnimationButton = new Button();
         Button stopAnimationButton = new Button();
 		
@@ -197,14 +224,11 @@ public class Main extends Application{
 			stepButton.setDisable(true);
 			comboBox.setDisable(true);
 			tf.setDisable(true);
+			addButton.setDisable(true);
 			Double frameSpeed = scrollBar.getValue();
-			
-			//System.out.println(frameSpeed);
-			animationFlag = true;
-			
-			
-			TimerTask tasknew = new CritterAnimation(frameSpeed);
-			timer = new Timer(); 
+				
+			TimerTask tasknew = new CritterAnimation(frameSpeed, runStatsArr, textArea);
+			timer = new Timer();
 			timer.schedule(tasknew, 0, 2000);
 		});
 		
@@ -215,9 +239,11 @@ public class Main extends Application{
 			stepButton.setDisable(false);
 			comboBox.setDisable(false);
 			tf.setDisable(false);
-			animationFlag = false;
+			addButton.setDisable(false);
 			timer.cancel();
+			runStatsArr.clear();
 		});
+		
 		
 		
         
@@ -228,6 +254,7 @@ public class Main extends Application{
         displayButton.setText("Show");
         startAnimationButton.setText("Animation Start");
         stopAnimationButton.setText("Animation stop");
+        addButton.setText("add");
         
         makeButton.setMaxWidth(Double.MAX_VALUE);
         runStatsButton.setMaxWidth(Double.MAX_VALUE);
@@ -236,6 +263,7 @@ public class Main extends Application{
         displayButton.setMaxWidth(Double.MAX_VALUE);
         startAnimationButton.setMaxWidth(Double.MAX_VALUE);
         stopAnimationButton.setMaxWidth(Double.MAX_VALUE);
+        addButton.setMaxWidth(Double.MAX_VALUE);
         
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -257,6 +285,7 @@ public class Main extends Application{
         grid.add(textArea, 1, 0, 7, 1);
         grid.add(animationText, 3, 5, 2, 1);
         grid.add(scrollBar, 1, 6, 7, 1);
+        grid.add(addButton, 5, 4);
         
         grid.setStyle("-fx-background-color: black");
         Scene scene = new Scene(grid, 500, 400);
@@ -264,17 +293,6 @@ public class Main extends Application{
         primaryStage.setX(170);
         primaryStage.setY(150);
         primaryStage.show();
-        
-        gridPane = new GridPane();
-        worldStage = new Stage();
-        worldStage.setTitle("Critter World");
-  
-        Scene worldScene = new Scene(gridPane, 600, 400);
-        worldStage.setScene(worldScene); 
-		worldStage.setX(670);
-		worldStage.setY(150);
-        worldStage.show();
-        
-        
+        world = new World();
 	}
 }
