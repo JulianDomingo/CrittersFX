@@ -4,12 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -33,21 +33,15 @@ import javafx.collections.ObservableList;
 
 
 public class Main extends Application{
+	private static World world;
 	private static ArrayList<String> critterNames = new ArrayList<String>();
 	
-	static GridPane gridPane;
-	static Canvas worldCanvas;
-	static Group root;
-	
-	
-	static Stage worldStage;
-	static Scene worldScene;
 	
 	public static void main(String[] args) {
 		
 		List<String> results = new ArrayList<String>();
 		
-		String filePath = "/Users/User/422C/assignment5/src/assignment5";
+		String filePath = "/Users/KaTaiHo/Documents/workspace/Critters_2/src/assignment5";
 		File[] files = new File(filePath).listFiles();
 		
 		for (File file : files) {
@@ -61,7 +55,6 @@ public class Main extends Application{
 				    constructor = myCritter.getConstructor(); // get null parameter constructor
 				    instanceOfMyCritter = constructor.newInstance(); // create instance
 				    Critter me = (Critter) instanceOfMyCritter; // cast to Critter
-				    System.out.println(fileName);
 				    critterNames.add(fileName);
 			    }
 				catch (Exception e) {
@@ -114,6 +107,18 @@ public class Main extends Application{
 		TextField tf = new TextField("#");
 		tf.setPrefWidth(50);
 		
+		Label animationText = new Label();
+		animationText.setText("Animation Speed");
+		animationText.setAlignment(Pos.CENTER);
+		animationText.setMaxWidth(Double.MAX_VALUE);
+		animationText.setTextFill(Color.WHITE);
+		
+		ScrollBar scrollBar = new ScrollBar();
+		scrollBar.setMin(0);
+		scrollBar.setMax(500);
+		scrollBar.setValue(250);
+		
+		
 		TextArea textArea = new TextArea();
 		textArea.setWrapText(true);
 		textArea.setEditable(false);
@@ -130,39 +135,40 @@ public class Main extends Application{
 			for (int i = 0; i < temp; i++) {
 				try {
 					Critter.makeCritter(comboBox.getSelectionModel().getSelectedItem().toString());
-					System.out.println(comboBox.getSelectionModel().getSelectedItem().toString());
 				}
-				catch(InvalidCritterException e) {
+				catch(Exception e) {
 						
 				}
 			}
-			System.out.println(CritterWorld.getPopulation());
 		});
-
+		
+		Button startAnimationButton = new Button();
+		Button stopAnimationButton = new Button();
+		
 		
 		Button runStatsButton = new Button();
 		runStatsButton.setOnAction((ActionEvent event)-> {
-			String critterName = comboBox.getSelectionModel().getSelectedItem().toString();
-			
-		    // Create a stream to hold the output
-		    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		    PrintStream ps = new PrintStream(baos);
-		    // IMPORTANT: Save the old System.out!
-		    PrintStream old = System.out;
-		    // Tell Java to use your special stream
-		    System.setOut(ps);
-		    // Print some output: goes to your special stream
-		    
-			
-			try {
-				List<Critter> critters = Critter.getInstances(critterName);
-				Class<?> classes = Class.forName("assignment5." + critterName);
-				classes.getMethod("runStats", java.util.List.class).invoke(null, critters);
+			if (!comboBox.getSelectionModel().isEmpty()) {
+				 // Create a stream to hold the output
+			    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			    PrintStream ps = new PrintStream(baos);
+			    // IMPORTANT: Save the old System.out!
+			    PrintStream old = System.out;
+			    // Tell Java to use your special stream
+			    System.setOut(ps);
+			    // Print some output: goes to your special stream
+				String critterName = comboBox.getSelectionModel().getSelectedItem().toString();		    
+				
+				try {
+					List<Critter> critters = Critter.getInstances(critterName);
+					Class<?> classes = Class.forName("assignment5." + critterName);
+					classes.getMethod("runStats", java.util.List.class).invoke(null, critters);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				textArea.setText(baos.toString());
 			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			textArea.setText(baos.toString());
 		});
 
         Button stepButton = new Button();
@@ -183,10 +189,8 @@ public class Main extends Application{
         	}
 		});
         
-        
         Button displayButton = new Button();
         displayButton.setOnAction((ActionEvent event)-> Critter.displayWorld());
-        
         
         Button quitButton = new Button();
         quitButton.setOnAction((ActionEvent event)-> System.exit(0));
@@ -196,12 +200,16 @@ public class Main extends Application{
         quitButton.setText("Quit");
         stepButton.setText("Step");
         displayButton.setText("Show");
+        startAnimationButton.setText("Animation Start");
+        stopAnimationButton.setText("Animation stop");
         
         makeButton.setMaxWidth(Double.MAX_VALUE);
         runStatsButton.setMaxWidth(Double.MAX_VALUE);
         quitButton.setMaxWidth(Double.MAX_VALUE);
         stepButton.setMaxWidth(Double.MAX_VALUE);
         displayButton.setMaxWidth(Double.MAX_VALUE);
+        startAnimationButton.setMaxWidth(Double.MAX_VALUE);
+        stopAnimationButton.setMaxWidth(Double.MAX_VALUE);
         
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -210,16 +218,19 @@ public class Main extends Application{
 
         grid.setPadding(new Insets(25,25,25,25));
         
-        
         grid.add(runStatsOutput, 1, 0, 2, 1);
         grid.add(makeButton, 1, 2);
         grid.add(stepButton, 2, 2);
         grid.add(runStatsButton, 3, 2, 2, 1);
         grid.add(quitButton, 5, 2);
+        grid.add(startAnimationButton, 1, 3, 2, 1);
+        grid.add(stopAnimationButton, 5, 3, 3, 1);
         grid.add(comboBox, 3, 3, 2, 1);
         grid.add(displayButton, 3, 4, 2, 1);
         grid.add(tf, 6, 2, 2, 1);
         grid.add(textArea, 1, 0, 7, 1);
+        grid.add(animationText, 3, 5, 2, 1);
+        grid.add(scrollBar, 1, 6, 7, 1);
         
         grid.setStyle("-fx-background-color: black");
         Scene scene = new Scene(grid, 500, 400);
@@ -227,26 +238,6 @@ public class Main extends Application{
         primaryStage.setX(170);
         primaryStage.setY(150);
         primaryStage.show();
-    	System.out.print(critterNames.toString());
-       
-// gridPane = new GridPane();
-    	
-    	gridPane = new GridPane();
-    	
-    	worldCanvas = new Canvas(600, 400);
-        worldStage = new Stage();
-        worldStage.setTitle("Critter World");
-         
-        gridPane.getChildren().add(worldCanvas);
-        
-        		 	
-        worldStage.setScene(new Scene(gridPane, 600, 400));
-  
-        // worldScene = new Scene(gridPane, 600, 400);
-        
-        // worldStage.setScene(worldScene); 
-		worldStage.setX(670);
-		worldStage.setY(150);
-        worldStage.show();
+        world = new World();
 	}
 }
