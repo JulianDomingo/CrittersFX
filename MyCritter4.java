@@ -80,7 +80,7 @@ public class MyCritter4 extends Critter{
 	} 
 	
 	@Override
-	public javafx.scene.paint.Color viewFillColor() {
+	public javafx.scene.paint.Color viewColor() {
 		return javafx.scene.paint.Color.DARKORANGE;
 	}
 	

@@ -120,7 +120,7 @@ public class MyCritter2 extends Critter {
 	} 
 	
 	@Override
-	public javafx.scene.paint.Color viewFillColor() {
+	public javafx.scene.paint.Color viewColor() {
 		return javafx.scene.paint.Color.TOMATO;
 	}
 	

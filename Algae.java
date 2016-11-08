@@ -10,11 +10,11 @@ public class Algae extends TestCritter {
 	
 	public void doTimeStep() {
 		setEnergy(getEnergy() + Params.photosynthesis_energy_amount);
-	}
+	} 
 	 
 	public CritterShape viewShape() { 
 		// return CritterShape.TRIANGLE;
-		return CritterShape.STAR;
+		return CritterShape.CIRCLE;
 	} 
 	
 	public javafx.scene.paint.Color viewColor() { 

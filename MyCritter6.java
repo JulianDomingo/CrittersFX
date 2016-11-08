@@ -26,7 +26,7 @@ public class MyCritter6 extends TestCritter {
 	} 
 	
 	@Override
-	public javafx.scene.paint.Color viewFillColor() {
+	public javafx.scene.paint.Color viewColor() {
 		return javafx.scene.paint.Color.DARKVIOLET;
 	}
 	

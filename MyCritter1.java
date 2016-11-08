@@ -26,12 +26,12 @@ public class MyCritter1 extends Critter.TestCritter {
 	
 	@Override
 	public CritterShape viewShape() {
-		return CritterShape.STAR;
+		return CritterShape.CIRCLE;
 	} 
 	
 	@Override
-	public javafx.scene.paint.Color viewFillColor() {
-		return javafx.scene.paint.Color.CORAL;
+	public javafx.scene.paint.Color viewColor() {
+		return javafx.scene.paint.Color.CRIMSON;
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ package assignment5;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -568,20 +569,45 @@ public abstract class Critter {
 		
 		populateWorld();
 		
-		// Refresh world stage. 
-		Main.gridPane = new GridPane();
-			
+		GraphicsContext gc = Main.worldCanvas.getGraphicsContext2D();
+		Main.gridPane.setVgap(1);
+		Main.gridPane.setHgap(1); 
+		Main.gridPane.getChildren().clear();
+		gc.clearRect(0, 0, 600, 400);
+		  
 		for (Critter living : CritterWorld.getLivingCritters()) {
-			Main.gridPane.add(getCritterShape(living), living.x_coord, living.y_coord);
-		}		
+			// gc.fillOval(living.x_coord * 10, living.y_coord * 10, 10.0, 10.0);
+			drawCritterShape(living, gc);
+			// Main.gridPane.getChildren().add(getCritterShape(living));	
+		}	
+			 
+		Main.gridPane.getChildren().add(Main.worldCanvas);
 		
-		// Refresh world scene holding the critter world.
-		Main.worldScene = new Scene(Main.gridPane, 600, 400);
-		Main.worldStage.setScene(Main.worldScene);
-		
-		// Display the updated critter world.
 		Main.worldStage.show();
 	} 
+	
+	/**
+	 * Draws respective shape and color for critter
+	 */ 
+	static void drawCritterShape(Critter c, GraphicsContext gc) {
+		gc.setFill(c.viewColor());
+		gc.setStroke(c.viewOutlineColor());
+		
+		switch(c.viewShape()) {
+			case CIRCLE: gc.fillOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0); 
+						 gc.strokeOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0);
+						 break;
+			case SQUARE: gc.fillRect(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0);
+						 gc.strokeRect(c.x_coord* 10, c.y_coord * 10, 10.0, 10.0);
+						 break; 
+			default: gc.fillOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0); 
+					 gc.strokeOval(c.x_coord * 10, c.y_coord * 10, 10.0, 10.0);
+					 break;
+			
+		}					
+		
+		
+	}
 	
 	/**
 	 * Retrieves unique critter shape and color values.
@@ -592,9 +618,9 @@ public abstract class Critter {
 		Shape s = null;
 		
 		switch (c.viewShape()) {
-			case CIRCLE: s = new Circle(10.0);
+			case CIRCLE: s = new Circle(25.0);
 						 break;
-			case SQUARE: s = new Rectangle(10.0, 10.0);
+			case SQUARE: s = new Rectangle(25.0, 25.0);
 						 break; 
 			case TRIANGLE: s = (Polygon) new Polygon();
 						   ((Polygon) s).getPoints().addAll(new Double[] {
@@ -620,7 +646,7 @@ public abstract class Critter {
 							    25.0, 2.5							   								   							   	  					   	   
 					   });
 					   break;
-			default: s = new Circle(10.0);
+			default: s = new Circle(25.0);
 					 break;
 		}
 		
