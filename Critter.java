@@ -423,7 +423,7 @@ public abstract class Critter {
 	
 	/**
 	 * spawns Algae into the world
-	 */
+	 */ 
 	private static void spawnAlgae() {
 		for (int i = 0; i < Params.refresh_algae_count; i++) {
 			try {
@@ -574,7 +574,7 @@ public abstract class Critter {
 		Main.gridPane.getChildren().clear();
 		
 		gc.clearRect(0, 0, Params.world_width * 5.0, Params.world_height * 5.0);
-		  
+		   
 		for (Critter living : CritterWorld.getLivingCritters()) {
 			drawCritterShape(living, gc);			 
 		}	
