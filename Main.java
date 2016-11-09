@@ -48,7 +48,7 @@ public class Main extends Application{
     static Stage worldStage;
 
 	public static void main(String[] args) {
-		
+		 
 		List<String> results = new ArrayList<String>();
 		
 		// String filePath = "/Users/KaTaiHo/Documents/workspace/Critters_2/src/assignment5";
@@ -62,11 +62,14 @@ public class Main extends Application{
 				Constructor<?> constructor = null;
 				Object instanceOfMyCritter = null;
 				try {
-					myCritter = Class.forName("assignment5." + fileName);
-				    constructor = myCritter.getConstructor(); // get null parameter constructor
-				    instanceOfMyCritter = constructor.newInstance(); // create instance
-				    Critter me = (Critter) instanceOfMyCritter; // cast to Critter
-				    critterNames.add(fileName);
+					if (!fileName.equals("AlgaephobicCritter")) {
+				
+						myCritter = Class.forName("assignment5." + fileName);
+					    constructor = myCritter.getConstructor(); // get null parameter constructor
+					    instanceOfMyCritter = constructor.newInstance(); // create instance
+					    Critter me = (Critter) instanceOfMyCritter; // cast to Critter
+					    critterNames.add(fileName);
+					}
 			    }
 				catch (Exception e) {
 					
@@ -147,8 +150,12 @@ public class Main extends Application{
 				
 			}
 			for (int i = 0; i < temp; i++) {
-				try {
-					Critter.makeCritter(comboBox.getSelectionModel().getSelectedItem().toString());
+				try { 
+					String tempString = comboBox.getSelectionModel().getSelectedItem().toString();
+					if (!temp.equals("AlgaephobicCritter")) {					
+						Critter.makeCritter(tempString);
+					}
+					
 				}
 				catch(Exception e) {
 						
@@ -264,7 +271,7 @@ public class Main extends Application{
 						}
 					});
 				}		 
-			}, 100, 2000);
+			}, 100, 100);
 		});
 		
 		stopAnimationButton.setOnAction((ActionEvent event)->{
@@ -277,11 +284,8 @@ public class Main extends Application{
 			addButton.setDisable(false);
 			timer.cancel();
 			runStatsArr.clear();
-		});
+		});	
 		
-		
-		
-        
         makeButton.setText("Make");
         runStatsButton.setText("runStats");
         quitButton.setText("Quit");
@@ -330,9 +334,10 @@ public class Main extends Application{
         primaryStage.show();
         
         gridPane = new GridPane();
+        gridPane.setStyle("-fx-background-color: black");
         worldStage = new Stage();
         worldStage.setTitle("Critter World");
-
+        
         worldCanvas = new Canvas(Params.world_width * 5.0, Params.world_height * 5.0);
         gridPane.getChildren().add(worldCanvas);
         worldStage.setScene(new Scene(gridPane, Params.world_width * 5.0, Params.world_height * 5.0));
