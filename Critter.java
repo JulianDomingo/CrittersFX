@@ -572,10 +572,11 @@ public abstract class Critter {
 		Main.gridPane.setVgap(1);
 		Main.gridPane.setHgap(1); 
 		Main.gridPane.getChildren().clear();
-		gc.clearRect(0, 0, Params.world_width, Params.world_height);
+		
+		gc.clearRect(0, 0, Params.world_width * 5.0, Params.world_height * 5.0);
 		  
 		for (Critter living : CritterWorld.getLivingCritters()) {
-			drawCritterShape(living, gc);			
+			drawCritterShape(living, gc);			 
 		}	
 			 
 		Main.gridPane.getChildren().add(Main.worldCanvas);		
@@ -589,26 +590,15 @@ public abstract class Critter {
 		gc.setFill(c.viewColor());
 		gc.setStroke(c.viewOutlineColor());
 		
-//		double x = Params.world_width / c.x_coord;
-//		double y = Params.world_height / c.y_coord;
-		double x = c.x_coord;
-		double y = c.y_coord;
+		double size = (Double) (Params.world_height / 10.0);
 		
-		double size = Math.sqrt((Double) (Params.world_height / 10.0));
+		double x = c.x_coord * 5.0;
+		double y = c.y_coord * 5.0;	
+
 		
-//		double x = 0.0, y = 0.0;
-//		boolean settingX = false;
-//		
-//		try {
-//			settingX = true;
-//			x = (Params.world_width / c.x_coord) * 10.0;
-//			settingX = false;
-//			y = (Params.world_height / c.y_coord) * 10.0;
-//		}
-//		catch (ArithmeticException e1) {
-//			if (settingX) { x = 5.0; }
-//			else { y = 5.0; }		
-//		}
+		double deltaX = c.x_coord / Params.world_width;
+		double deltaY = c.y_coord / Params.world_height;
+		
 		
 		switch (c.viewShape()) {
 			case CIRCLE: gc.fillOval(x, y, size, size); 
@@ -623,10 +613,10 @@ public abstract class Critter {
 								y, y - 10.0, y
 						   }, 3);
 						   gc.strokePolygon(new double[]{
-						   		x, x + 5.0, x + 10.0
+						   		x, x + 5.0, x + 10.0    
 						   }, new double[] {
 								y, y - 10.0, y 
-						   }, 3); 
+						   }, 3);
 						   break;
 			case DIAMOND: gc.fillPolygon(new double[]{
 								x + 5, x, x - 5, x
