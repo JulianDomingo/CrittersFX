@@ -51,8 +51,8 @@ public class Main extends Application{
 		 
 		List<String> results = new ArrayList<String>();
 		
-		// String filePath = "/Users/KaTaiHo/Documents/workspace/Critters_2/src/assignment5";
-		String filePath = "/Users/User/422C/assignment5/src/assignment5";
+		String filePath = "/Users/KaTaiHo/Documents/workspace/Critter3/src/assignment5";
+		//String filePath = "/Users/User/422C/assignment5/src/assignment5";
 		File[] files = new File(filePath).listFiles();
 		
 		for (File file : files) {
@@ -163,6 +163,28 @@ public class Main extends Application{
 			}
 		});
 		
+		Button makeAllButton = new Button();
+		makeAllButton.setOnAction((ActionEvent event)-> {
+			String inputText = tf.getText();
+			Integer temp = 1;
+			if (inputText != null && !inputText.equals("#")) {
+				temp = Integer.valueOf(inputText);
+			}
+			for (String s: critterNames) {
+				for (int i = 0; i < temp; i++) {
+					try { 
+						if (!temp.equals("AlgaephobicCritter")) {					
+							Critter.makeCritter(s);
+						}
+						
+					}
+					catch(Exception e) {
+							
+					}
+				}
+			}
+		});
+		
 		Button runStatsButton = new Button();
 		runStatsButton.setOnAction((ActionEvent event)-> {
 			if (!comboBox.getSelectionModel().isEmpty()) {
@@ -235,7 +257,6 @@ public class Main extends Application{
 			addButton.setDisable(true);
 			Double frameSpeed = scrollBar.getValue();
 				
-			TimerTask tasknew = new CritterAnimation(frameSpeed, runStatsArr, textArea);
 			timer = new Timer();
 			timer.schedule(new TimerTask() {
 				public void run() {
@@ -294,6 +315,7 @@ public class Main extends Application{
         startAnimationButton.setText("Animation Start");
         stopAnimationButton.setText("Animation stop");
         addButton.setText("add");
+        makeAllButton.setText("Make All");
         
         makeButton.setMaxWidth(Double.MAX_VALUE);
         runStatsButton.setMaxWidth(Double.MAX_VALUE);
@@ -303,6 +325,8 @@ public class Main extends Application{
         startAnimationButton.setMaxWidth(Double.MAX_VALUE);
         stopAnimationButton.setMaxWidth(Double.MAX_VALUE);
         addButton.setMaxWidth(Double.MAX_VALUE);
+        comboBox.setMaxWidth(Double.MAX_VALUE);
+        makeAllButton.setMaxWidth(Double.MAX_VALUE);
         
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -325,6 +349,7 @@ public class Main extends Application{
         grid.add(animationText, 3, 5, 2, 1);
         grid.add(scrollBar, 1, 6, 7, 1);
         grid.add(addButton, 5, 4);
+        grid.add(makeAllButton, 1, 4, 2, 1);
         
         grid.setStyle("-fx-background-color: black");
         Scene scene = new Scene(grid, 500, 400);
