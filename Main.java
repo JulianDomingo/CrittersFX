@@ -135,6 +135,8 @@ public class Main extends Application{
 		
 		
 		TextArea textArea = new TextArea();
+		textArea.setPrefRowCount(500);
+		textArea.setPrefColumnCount(400);
 		textArea.setWrapText(true);
 		textArea.setEditable(false);
 		textArea.setText("runStats will appear here : D");
@@ -244,6 +246,13 @@ public class Main extends Application{
         	System.out.println(runStatsArr.toString());
         });
         
+        Button addAllButton = new Button();
+        addAllButton.setOnAction((ActionEvent event)-> {
+        	for (String s: critterNames) {
+        		runStatsArr.add(s);
+        	}
+        });
+        
         Button startAnimationButton = new Button();
         Button stopAnimationButton = new Button();
 		
@@ -255,6 +264,8 @@ public class Main extends Application{
 			comboBox.setDisable(true);
 			tf.setDisable(true);
 			addButton.setDisable(true);
+			makeAllButton.setDisable(true);
+			addAllButton.setDisable(true);
 			Double frameSpeed = scrollBar.getValue();
 				
 			timer = new Timer();
@@ -303,6 +314,8 @@ public class Main extends Application{
 			comboBox.setDisable(false);
 			tf.setDisable(false);
 			addButton.setDisable(false);
+			makeAllButton.setDisable(false);
+			addAllButton.setDisable(false);
 			timer.cancel();
 			runStatsArr.clear();
 		});	
@@ -316,6 +329,7 @@ public class Main extends Application{
         stopAnimationButton.setText("Animation stop");
         addButton.setText("add");
         makeAllButton.setText("Make All");
+        addAllButton.setText("Add All");
         
         makeButton.setMaxWidth(Double.MAX_VALUE);
         runStatsButton.setMaxWidth(Double.MAX_VALUE);
@@ -327,6 +341,7 @@ public class Main extends Application{
         addButton.setMaxWidth(Double.MAX_VALUE);
         comboBox.setMaxWidth(Double.MAX_VALUE);
         makeAllButton.setMaxWidth(Double.MAX_VALUE);
+        addAllButton.setMaxWidth(Double.MAX_VALUE);
         
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -335,7 +350,9 @@ public class Main extends Application{
 
         grid.setPadding(new Insets(25,25,25,25));
         
-        grid.add(runStatsOutput, 1, 0, 2, 1);
+        grid.add(textArea, 1, 0, 7, 1);
+        
+        grid.add(runStatsOutput, 1, 1, 2, 1);
         grid.add(makeButton, 1, 2);
         grid.add(stepButton, 2, 2);
         grid.add(runStatsButton, 3, 2, 2, 1);
@@ -345,17 +362,18 @@ public class Main extends Application{
         grid.add(comboBox, 3, 3, 2, 1);
         grid.add(displayButton, 3, 4, 2, 1);
         grid.add(tf, 6, 2, 2, 1);
-        grid.add(textArea, 1, 0, 7, 1);
+       
         grid.add(animationText, 3, 5, 2, 1);
         grid.add(scrollBar, 1, 6, 7, 1);
         grid.add(addButton, 5, 4);
         grid.add(makeAllButton, 1, 4, 2, 1);
+        grid.add(addAllButton, 1, 5, 2, 1);
         
         grid.setStyle("-fx-background-color: black");
-        Scene scene = new Scene(grid, 500, 400);
+        Scene scene = new Scene(grid, 600, 700);
         primaryStage.setScene(scene);
-        primaryStage.setX(170);
-        primaryStage.setY(150);
+        primaryStage.setX(120);
+        primaryStage.setY(50);
         primaryStage.show();
         
         gridPane = new GridPane();
@@ -366,8 +384,8 @@ public class Main extends Application{
         worldCanvas = new Canvas(Params.world_width * 5.0, Params.world_height * 5.0);
         gridPane.getChildren().add(worldCanvas);
         worldStage.setScene(new Scene(gridPane, Params.world_width * 5.0, Params.world_height * 5.0));
-        worldStage.setX(670);
-        worldStage.setY(150);
+        worldStage.setX(720);
+        worldStage.setY(50);
         worldStage.show();	
 	}
 }
