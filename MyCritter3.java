@@ -55,7 +55,10 @@ public class MyCritter3 extends Critter {
 	 * it runs away.
 	 */
 	public boolean fight(String enemy) {
-		feelsLikeIt = getRandomInt(2);
+		String critter = look((Critter.getRandomInt(8) % 8), false);
+		if (critter != null) {
+			feelsLikeIt = getRandomInt(2);
+		}		
 		if (enemy.equals("Algae")) {
 			return true;
 		}
