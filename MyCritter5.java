@@ -100,7 +100,7 @@ public class MyCritter5 extends Critter{
 	
 	@Override
 	public javafx.scene.paint.Color viewColor() {
-		return javafx.scene.paint.Color.GREY;
+		return javafx.scene.paint.Color.YELLOW;
 	}
 	
 	@Override
