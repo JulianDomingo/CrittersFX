@@ -87,7 +87,13 @@ public class MyCritter2 extends Critter {
 			cries += 5; 
 			MyCritter2 child = new MyCritter2();
 			reproduce(child, Critter.getRandomInt(8));
-			run(Critter.getRandomInt(8));
+			String critter = look((2 * Critter.getRandomInt(8) % 8), true);
+			if (critter != null) {
+				run(direction);
+			}
+			else {
+				walk(direction);
+			}
 		}
 	}
 	
@@ -119,9 +125,8 @@ public class MyCritter2 extends Critter {
 		return CritterShape.TRIANGLE;
 	} 
 	
-	@Override
-	public javafx.scene.paint.Color viewColor() {
-		return javafx.scene.paint.Color.TOMATO;
+	public javafx.scene.paint.Color viewColor() { 
+		return javafx.scene.paint.Color.TAN;
 	}
 	
 	@Override
