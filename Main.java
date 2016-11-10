@@ -58,18 +58,14 @@ public class Main extends Application{
 		for (File file : files) {
 			if (file.toString().endsWith(".java")) {
 				String fileName = file.toString().substring(filePath.length() + 1, file.toString().length() - 5);
-				Class<?> myCritter = null;
-				Constructor<?> constructor = null;
-				Object instanceOfMyCritter = null;
 				try {
-					if (!fileName.equals("AlgaephobicCritter")) {
-				
-						myCritter = Class.forName("assignment5." + fileName);
-					    constructor = myCritter.getConstructor(); // get null parameter constructor
-					    instanceOfMyCritter = constructor.newInstance(); // create instance
-					    Critter me = (Critter) instanceOfMyCritter; // cast to Critter
-					    critterNames.add(fileName);
-					}
+						Class<?> myCritter = Class.forName("assignment5.Critter");
+						Class<?> myClasses = Class.forName("assignment5." + fileName);
+					    
+					    if(!fileName.equals("Critter") && myCritter.isAssignableFrom(myClasses)){
+					    	critterNames.add(fileName);
+					    }
+					    
 			    }
 				catch (Exception e) {
 					
@@ -153,10 +149,8 @@ public class Main extends Application{
 			}
 			for (int i = 0; i < temp; i++) {
 				try { 
-					String tempString = comboBox.getSelectionModel().getSelectedItem().toString();
-					if (!temp.equals("AlgaephobicCritter")) {					
-						Critter.makeCritter(tempString);
-					}
+					String tempString = comboBox.getSelectionModel().getSelectedItem().toString();				
+					Critter.makeCritter(tempString);
 					
 				}
 				catch(Exception e) {
